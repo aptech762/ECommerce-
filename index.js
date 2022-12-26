@@ -1,4 +1,11 @@
 var proudctBox = document.getElementById("proudctBox")
+var fetchData =[]
+var inbox = document.getElementById("inbox")
+window.onload = () => {
+    inbox.innerHTML = JSON.parse(localStorage.getItem("items")).length
+    
+}
+
 fetch("./index.json")
 .then ((data) => {
     return data.json ()
@@ -13,11 +20,32 @@ fetch("./index.json")
                 <div class="card-body">
                   <h5 class="card-title">${product.Name}</h5>
                   <p class="card-text">${product.price}</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                  <a href="#" class="btn btn-primary" onclick="addCart(${index})">Add To Cart</a>
                 </div>
               </div>
         </div>
     </div>
         `
+        fetchData.push(product)
+        
     });
+})
+
+function addCart(a){
+    var btn = document.querySelectorAll(".btn")
+    btn[a].classList.add("disabled")
+    if(localStorage.getItem("items")){
+        var local = JSON.parse(localStorage.getItem("items"))
+        var spread = [...local, fetchData[a]]
+        localStorage.setItem("items",JSON.stringify(spread))
+    } else{
+        localStorage.setItem("items",JSON.stringify([fetchData[a]]))
+        
+    }
+    inbox.innerHTML = JSON.parse(localStorage.getItem("items")).length
+}
+
+inbox.addEventListener("click",() => {
+    console.log("asasasa")
+    window.location.href = "add.html"
 })
