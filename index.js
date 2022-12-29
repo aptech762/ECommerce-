@@ -1,6 +1,6 @@
 var proudctBox = document.getElementById("proudctBox")
 var fetchData =[]
-var inbox = document.getElementById("inbox")
+var ibtn = document.getElementById("ibtn")
 window.onload = () => {
     inbox.innerHTML = JSON.parse(localStorage.getItem("items")).length
     
@@ -32,12 +32,22 @@ fetch("./index.json")
 })
 
 function addCart(a){
-    var btn = document.querySelectorAll(".btn")
-    btn[a].classList.add("disabled")
+    // var btn = document.querySelectorAll(".btn")
+    // btn[a].classList.add("disabled")
     if(localStorage.getItem("items")){
         var local = JSON.parse(localStorage.getItem("items"))
-        var spread = [...local, fetchData[a]]
-        localStorage.setItem("items",JSON.stringify(spread))
+        var find = local.find((data) =>{
+            if (data.id == fetchData[a].id){
+                return true
+            }
+        })
+        if (find == undefined){
+            var spread = [...local, fetchData[a]]
+            localStorage.setItem("items",JSON.stringify(spread))
+        } else{
+            alert('already in cart')
+        }
+
     } else{
         localStorage.setItem("items",JSON.stringify([fetchData[a]]))
         
@@ -45,7 +55,9 @@ function addCart(a){
     inbox.innerHTML = JSON.parse(localStorage.getItem("items")).length
 }
 
-inbox.addEventListener("click",() => {
-    console.log("asasasa")
+ibtn.addEventListener("click",() => {
+    // console.log("asasasa")
     window.location.href = "add.html"
 })
+
+
